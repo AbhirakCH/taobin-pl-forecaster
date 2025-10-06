@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Container } from "@mui/material";
 import { Machine } from "@src/types";
 import MachineList from "@src/features/AdminPanel/MachineList";
-import AddMachineModal from "@src/features/AdminPanel/AdMachineModal";
+import MachineFormModal from "@src/features/AdminPanel/MachineFormModal";
 
 const DUMMY_MACHINES = [
   {
@@ -36,7 +36,8 @@ const DUMMY_MACHINES = [
 
 function App() {
   const [machines, setMachines] = useState<Machine[]>(DUMMY_MACHINES);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
 
   const handleAddMachine = (newMachineData: Omit<Machine, "id">) => {
     setMachines((prevMachines) => {
@@ -46,19 +47,48 @@ function App() {
       };
       return [...prevMachines, newMachineWithId];
     });
-    setIsAddModalOpen(false);
+    setIsModalOpen(false);
+  };
+
+  const onEditMachine = (machineId: number) => {
+    const machineToEdit = machines.find((m) => m.id === machineId);
+    if (machineToEdit) {
+      setEditingMachine(machineToEdit);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingMachine(null);
+  };
+
+  const handleUpdateMachine = (updatedMachineData: Omit<Machine, "id">) => {
+    if (!editingMachine) return;
+
+    setMachines((prevMachines) =>
+      prevMachines.map((machine) =>
+        machine.id === editingMachine.id
+          ? { ...machine, ...updatedMachineData }
+          : machine
+      )
+    );
+    handleCloseModal();
   };
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <MachineList
         machines={machines}
-        onOpenAddModal={() => setIsAddModalOpen(true)}
+        onOpenAddModal={() => setIsModalOpen(true)}
+        onEdit={onEditMachine}
       />
-      <AddMachineModal
-        open={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSave={handleAddMachine}
+      <MachineFormModal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={editingMachine ? handleUpdateMachine : handleAddMachine}
+        initialData={editingMachine}
+        onClearInitialData={() => setEditingMachine(null)}
       />
     </Container>
   );

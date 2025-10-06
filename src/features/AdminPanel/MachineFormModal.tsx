@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Box,
@@ -17,6 +17,8 @@ interface AddMachineModalProps {
   open: boolean;
   onClose: () => void;
   onSave: (data: MachineFormData) => void;
+  initialData: MachineFormData | null;
+  onClearInitialData: () => void;
 }
 
 const style = {
@@ -33,10 +35,12 @@ const style = {
 
 type MachineFormData = Omit<Machine, "id">;
 
-const AddMachineModal: React.FC<AddMachineModalProps> = ({
+const MachineFormModal: React.FC<AddMachineModalProps> = ({
   open,
   onClose,
   onSave,
+  initialData,
+  onClearInitialData,
 }) => {
   const [formData, setFormData] = useState<MachineFormData>({
     name: "",
@@ -47,6 +51,30 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({
     electricCostPerTempPerDay: 0,
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name,
+        locationType: initialData.locationType,
+        expectedSalesPerDay: initialData.expectedSalesPerDay,
+        averageProfitMarginPercentage:
+          initialData.averageProfitMarginPercentage,
+        rentCostPerDay: initialData.rentCostPerDay,
+        electricCostPerTempPerDay: initialData.electricCostPerTempPerDay,
+      });
+    } else {
+      setFormData({
+        name: "",
+        locationType: "",
+        expectedSalesPerDay: 0,
+        averageProfitMarginPercentage: 0,
+        rentCostPerDay: 0,
+        electricCostPerTempPerDay: 0,
+      });
+    }
+    setErrors({});
+  }, [initialData, open]);
 
   const validate = (): boolean => {
     const newErrors: { [key: string]: string } = {};
@@ -89,15 +117,29 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({
     }));
   };
 
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      locationType: "",
+      expectedSalesPerDay: 0,
+      averageProfitMarginPercentage: 0,
+      rentCostPerDay: 0,
+      electricCostPerTempPerDay: 0,
+    });
+    setErrors({});
+    onClearInitialData();
+  };
+
   const handleSave = () => {
     if (!validate()) {
       return;
     }
     onSave(formData);
+    resetForm();
   };
 
   const handleCancel = () => {
-    setErrors({});
+    resetForm();
     onClose();
   };
 
@@ -122,7 +164,7 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({
           variant="h6"
           component="h2"
         >
-          Add New Machine
+          {initialData ? "Edit Machine" : "Add New Machine"}
         </Typography>
 
         <Box component="form" sx={{ mt: 2 }}>
@@ -217,4 +259,4 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({
   );
 };
 
-export default AddMachineModal;
+export default MachineFormModal;
