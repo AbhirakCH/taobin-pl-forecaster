@@ -13,13 +13,11 @@ import {
 } from "@mui/material";
 import { Machine } from "@src/types";
 
-// 2. กำหนด Type ของ Props ที่ Component จะได้รับ
 interface MachineListProps {
   machines: Machine[];
   onOpenAddModal: () => void;
 }
 
-// 3. ใช้ React.FC (Functional Component) และใส่ Type ของ Props เข้าไป
 const MachineList: React.FC<MachineListProps> = ({
   machines,
   onOpenAddModal,

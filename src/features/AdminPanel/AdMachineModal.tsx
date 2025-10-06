@@ -13,14 +13,12 @@ import {
 } from "@mui/material";
 import { Machine } from "@src/types";
 
-// กำหนด Type ของ Props ที่ Modal นี้จะได้รับ
 interface AddMachineModalProps {
   open: boolean;
   onClose: () => void;
   onSave: (data: MachineFormData) => void;
 }
 
-// Style มาตรฐานสำหรับ Modal ให้อยู่ตรงกลางจอ
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -78,11 +76,9 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({
     }
 
     setErrors(newErrors);
-    // ถ้า object newErrors ไม่มี key เลย แสดงว่าไม่มี error
     return Object.keys(newErrors).length === 0;
   };
 
-  // 3. สร้าง Handler กลางสำหรับอัปเดต State เมื่อผู้ใช้กรอกข้อมูล
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
   ) => {

@@ -10,7 +10,7 @@ const DUMMY_MACHINES = [
     name: "สามย่าน มิตรทาวน์",
     locationType: "SHOPPING MALL" as const,
     expectedSalesPerDay: 6500,
-    averageProfitMarginPercentage: 0.45, // 45%
+    averageProfitMarginPercentage: 0.45,
     rentCostPerDay: 550,
     electricCostPerTempPerDay: 12,
   },
@@ -19,7 +19,7 @@ const DUMMY_MACHINES = [
     name: "โรงพยาบาลจุฬาลงกรณ์",
     locationType: "HOSPITAL" as const,
     expectedSalesPerDay: 8000,
-    averageProfitMarginPercentage: 0.5, // 50%
+    averageProfitMarginPercentage: 0.5,
     rentCostPerDay: 600,
     electricCostPerTempPerDay: 15,
   },
@@ -28,7 +28,7 @@ const DUMMY_MACHINES = [
     name: "คณะวิศวกรรมศาสตร์ จุฬาฯ",
     locationType: "SCHOOL" as const,
     expectedSalesPerDay: 4500,
-    averageProfitMarginPercentage: 0.4, // 40%
+    averageProfitMarginPercentage: 0.4,
     rentCostPerDay: 300,
     electricCostPerTempPerDay: 10,
   },
@@ -41,13 +41,12 @@ function App() {
   const handleAddMachine = (newMachineData: Omit<Machine, "id">) => {
     setMachines((prevMachines) => {
       const newMachineWithId: Machine = {
-        id: Date.now(), // สร้าง ID ที่ไม่ซ้ำกันแบบง่ายๆ
+        id: Date.now(),
         ...newMachineData,
       };
-      // คืนค่าเป็น Array ใหม่ที่มีของเก่าทั้งหมด และของใหม่อีกหนึ่งชิ้น
       return [...prevMachines, newMachineWithId];
     });
-    setIsAddModalOpen(false); // ปิด Modal หลังจาก Save
+    setIsAddModalOpen(false);
   };
 
   return (
