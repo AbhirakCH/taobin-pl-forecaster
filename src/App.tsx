@@ -3,6 +3,7 @@ import { Container } from "@mui/material";
 import { Machine } from "@src/types";
 import MachineList from "@src/features/AdminPanel/MachineList";
 import MachineFormModal from "@src/features/AdminPanel/MachineFormModal";
+import ConfirmDeleteModal from "@src/features/AdminPanel/ConfirmDeleteModal";
 
 const DUMMY_MACHINES = [
   {
@@ -38,6 +39,7 @@ function App() {
   const [machines, setMachines] = useState<Machine[]>(DUMMY_MACHINES);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
+  const [machineToDelete, setMachineToDelete] = useState<Machine | null>(null);
 
   const handleAddMachine = (newMachineData: Omit<Machine, "id">) => {
     setMachines((prevMachines) => {
@@ -76,12 +78,32 @@ function App() {
     handleCloseModal();
   };
 
+  const handleOpenDeleteConfirm = (machineId: number) => {
+    const machine = machines.find((m) => m.id === machineId);
+    if (machine) {
+      setMachineToDelete(machine);
+    }
+  };
+
+  const handleCloseDeleteConfirm = () => {
+    setMachineToDelete(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!machineToDelete) return;
+    setMachines((prevMachines) =>
+      prevMachines.filter((m) => m.id !== machineToDelete.id)
+    );
+    handleCloseDeleteConfirm();
+  };
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <MachineList
         machines={machines}
         onOpenAddModal={() => setIsModalOpen(true)}
         onEdit={onEditMachine}
+        onDelete={handleOpenDeleteConfirm}
       />
       <MachineFormModal
         open={isModalOpen}
@@ -89,6 +111,12 @@ function App() {
         onSave={editingMachine ? handleUpdateMachine : handleAddMachine}
         initialData={editingMachine}
         onClearInitialData={() => setEditingMachine(null)}
+      />
+      <ConfirmDeleteModal
+        open={!!machineToDelete}
+        onClose={handleCloseDeleteConfirm}
+        onConfirm={handleConfirmDelete}
+        machine={machineToDelete}
       />
     </Container>
   );

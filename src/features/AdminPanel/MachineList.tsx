@@ -21,12 +21,14 @@ interface MachineListProps {
   machines: Machine[];
   onOpenAddModal: () => void;
   onEdit: (machineId: number) => void;
+  onDelete: (machineId: number) => void;
 }
 
 const MachineList: React.FC<MachineListProps> = ({
   machines,
   onOpenAddModal,
   onEdit,
+  onDelete,
 }) => {
   return (
     <Box sx={{ padding: 2 }}>
@@ -87,9 +89,7 @@ const MachineList: React.FC<MachineListProps> = ({
                       aria-label="delete"
                       size="small"
                       color="error"
-                      onClick={() =>
-                        console.log("Delete machine ID:", machine.id)
-                      }
+                      onClick={() => onDelete(machine.id)}
                     >
                       <DeleteIcon />
                     </IconButton>
