@@ -39,8 +39,14 @@ function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const handleAddMachine = (newMachineData: Omit<Machine, "id">) => {
-    // Logic การ Save จะมาทำตรงนี้
-    console.log("New machine data:", newMachineData);
+    setMachines((prevMachines) => {
+      const newMachineWithId: Machine = {
+        id: Date.now(), // สร้าง ID ที่ไม่ซ้ำกันแบบง่ายๆ
+        ...newMachineData,
+      };
+      // คืนค่าเป็น Array ใหม่ที่มีของเก่าทั้งหมด และของใหม่อีกหนึ่งชิ้น
+      return [...prevMachines, newMachineWithId];
+    });
     setIsAddModalOpen(false); // ปิด Modal หลังจาก Save
   };
 
@@ -53,7 +59,7 @@ function App() {
       <AddMachineModal
         open={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        // onSave={handleAddMachine} // เราจะเปิดใช้อันนี้ทีหลัง
+        onSave={handleAddMachine}
       />
     </Container>
   );

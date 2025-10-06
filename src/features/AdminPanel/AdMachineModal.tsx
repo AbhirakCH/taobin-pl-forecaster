@@ -17,7 +17,7 @@ import { Machine } from "@src/types";
 interface AddMachineModalProps {
   open: boolean;
   onClose: () => void;
-  // onSave: (data: NewMachineData) => void; // เราจะใช้ใน step ถัดไป
+  onSave: (data: MachineFormData) => void;
 }
 
 // Style มาตรฐานสำหรับ Modal ให้อยู่ตรงกลางจอ
@@ -35,15 +35,52 @@ const style = {
 
 type MachineFormData = Omit<Machine, "id">;
 
-const AddMachineModal: React.FC<AddMachineModalProps> = ({ open, onClose }) => {
+const AddMachineModal: React.FC<AddMachineModalProps> = ({
+  open,
+  onClose,
+  onSave,
+}) => {
   const [formData, setFormData] = useState<MachineFormData>({
     name: "",
-    locationType: "SCHOOL",
+    locationType: "",
     expectedSalesPerDay: 0,
     averageProfitMarginPercentage: 0,
     rentCostPerDay: 0,
     electricCostPerTempPerDay: 0,
   });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const validate = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Machine name is required.";
+    }
+    if (!formData.locationType) {
+      newErrors.locationType = "Location type is required.";
+    }
+    if (formData.expectedSalesPerDay <= 0) {
+      newErrors.expectedSalesPerDay = "Sales must be greater than 0.";
+    }
+    if (
+      formData.averageProfitMarginPercentage <= 0 ||
+      formData.averageProfitMarginPercentage > 1
+    ) {
+      newErrors.averageProfitMarginPercentage =
+        "Profit margin must be between 0 and 1 (e.g., 0.4 for 40%).";
+    }
+    if (formData.rentCostPerDay <= 0) {
+      newErrors.rentCostPerDay = "Rent cost must be greater than 0.";
+    }
+    if (formData.electricCostPerTempPerDay <= 0) {
+      newErrors.electricCostPerTempPerDay =
+        "Electric cost must be greater than 0.";
+    }
+
+    setErrors(newErrors);
+    // ถ้า object newErrors ไม่มี key เลย แสดงว่าไม่มี error
+    return Object.keys(newErrors).length === 0;
+  };
 
   // 3. สร้าง Handler กลางสำหรับอัปเดต State เมื่อผู้ใช้กรอกข้อมูล
   const handleChange = (
@@ -54,6 +91,18 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({ open, onClose }) => {
       ...prev,
       [name as string]: value,
     }));
+  };
+
+  const handleSave = () => {
+    if (!validate()) {
+      return;
+    }
+    onSave(formData);
+  };
+
+  const handleCancel = () => {
+    setErrors({});
+    onClose();
   };
 
   const handleSelectChange = (event: any) => {
@@ -71,7 +120,12 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({ open, onClose }) => {
       aria-labelledby="add-machine-modal-title"
     >
       <Box sx={style}>
-        <Typography id="add-machine-modal-title" variant="h6" component="h2">
+        <Typography
+          id="add-machine-modal-title"
+          color="black"
+          variant="h6"
+          component="h2"
+        >
           Add New Machine
         </Typography>
 
@@ -79,12 +133,14 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({ open, onClose }) => {
           <Stack spacing={2}>
             <TextField
               fullWidth
-              label="Name"
+              label="Machine Name"
               name="name"
               value={formData.name}
               onChange={handleChange}
+              error={!!errors.name}
+              helperText={errors.name}
             />
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors.locationType}>
               <InputLabel>Location Type</InputLabel>
               <Select
                 name="locationType"
@@ -96,6 +152,15 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({ open, onClose }) => {
                 <MenuItem value="SHOPPING MALL">SHOPPING MALL</MenuItem>
                 <MenuItem value="HOSPITAL">HOSPITAL</MenuItem>
               </Select>
+              {errors.locationType && (
+                <Typography
+                  variant="caption"
+                  color="error"
+                  sx={{ mt: 0.5, ml: 1.75 }}
+                >
+                  {errors.locationType}
+                </Typography>
+              )}
             </FormControl>
             <TextField
               fullWidth
@@ -104,6 +169,8 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({ open, onClose }) => {
               type="number"
               value={formData.expectedSalesPerDay}
               onChange={handleChange}
+              error={!!errors.expectedSalesPerDay}
+              helperText={errors.expectedSalesPerDay}
             />
             <TextField
               fullWidth
@@ -113,6 +180,8 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({ open, onClose }) => {
               placeholder="e.g., 0.4 for 40%"
               value={formData.averageProfitMarginPercentage}
               onChange={handleChange}
+              error={!!errors.averageProfitMarginPercentage}
+              helperText={errors.averageProfitMarginPercentage}
             />
             <TextField
               fullWidth
@@ -121,6 +190,8 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({ open, onClose }) => {
               type="number"
               value={formData.rentCostPerDay}
               onChange={handleChange}
+              error={!!errors.rentCostPerDay}
+              helperText={errors.rentCostPerDay}
             />
             <TextField
               fullWidth
@@ -129,6 +200,8 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({ open, onClose }) => {
               type="number"
               value={formData.electricCostPerTempPerDay}
               onChange={handleChange}
+              error={!!errors.electricCostPerTempPerDay}
+              helperText={errors.electricCostPerTempPerDay}
             />
           </Stack>
         </Box>
@@ -138,8 +211,10 @@ const AddMachineModal: React.FC<AddMachineModalProps> = ({ open, onClose }) => {
           spacing={2}
           sx={{ mt: 3, justifyContent: "flex-end" }}
         >
-          <Button onClick={onClose}>Cancel</Button>
-          <Button variant="contained">Save</Button>
+          <Button onClick={handleCancel}>Cancel</Button>
+          <Button variant="contained" onClick={handleSave}>
+            Save
+          </Button>
         </Stack>
       </Box>
     </Modal>
