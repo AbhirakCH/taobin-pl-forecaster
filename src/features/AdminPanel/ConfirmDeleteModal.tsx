@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Box, Typography, Button, Stack } from "@mui/material";
+import { Modal, Box, Typography, Button, Stack, Fade } from "@mui/material";
 import { Machine } from "@src/types";
 
 interface ConfirmDeleteModalProps {
@@ -31,25 +31,27 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={style}>
-        <Typography variant="h6" color="black" component="h2">
-          Confirm Deletion
-        </Typography>
-        <Typography sx={{ mt: 2 }} color="black">
-          Are you sure you want to delete the machine:{" "}
-          <strong>{machine.name}</strong>?
-        </Typography>
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{ mt: 3, justifyContent: "flex-end" }}
-        >
-          <Button onClick={onClose}>Cancel</Button>
-          <Button variant="contained" color="error" onClick={onConfirm}>
-            Delete
-          </Button>
-        </Stack>
-      </Box>
+      <Fade in={open}>
+        <Box sx={style}>
+          <Typography variant="h6" color="black" component="h2">
+            Confirm Deletion
+          </Typography>
+          <Typography sx={{ mt: 2 }} color="black">
+            Are you sure you want to delete the machine:{" "}
+            <strong>{machine.name}</strong>?
+          </Typography>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{ mt: 3, justifyContent: "flex-end" }}
+          >
+            <Button onClick={onClose}>Cancel</Button>
+            <Button variant="contained" color="error" onClick={onConfirm}>
+              Delete
+            </Button>
+          </Stack>
+        </Box>
+      </Fade>
     </Modal>
   );
 };
