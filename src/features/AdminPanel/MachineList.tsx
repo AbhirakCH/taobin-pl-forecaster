@@ -31,7 +31,7 @@ const MachineList: React.FC<MachineListProps> = ({
   onDelete,
 }) => {
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box>
       <Typography variant="h5" gutterBottom>
         Machine Management
       </Typography>
@@ -46,15 +46,27 @@ const MachineList: React.FC<MachineListProps> = ({
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Location Type</TableCell>
-              <TableCell align="right">Expected Sales / Day (Baht)</TableCell>
-              <TableCell align="right">Average Profit Margin (%)</TableCell>
-              <TableCell align="right">Rent Cost / Day (Baht)</TableCell>
-              <TableCell align="right">
-                Electric Cost / Temp / Day (Baht per °C)
+              <TableCell>
+                <strong>Name</strong>
               </TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell>
+                <strong>Location Type</strong>
+              </TableCell>
+              <TableCell align="right">
+                <strong>Expected Sales / Day (Baht)</strong>
+              </TableCell>
+              <TableCell align="right">
+                <strong>Average Profit Margin (%)</strong>
+              </TableCell>
+              <TableCell align="right">
+                <strong>Rent Cost / Day (Baht)</strong>
+              </TableCell>
+              <TableCell align="right">
+                <strong>Electric Cost / Temp / Day (Baht per °C)</strong>
+              </TableCell>
+              <TableCell align="center">
+                <strong>Actions</strong>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

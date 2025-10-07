@@ -100,7 +100,7 @@ function App() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth="xl" sx={{ mt: 4 }}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={7}>
           <MachineList

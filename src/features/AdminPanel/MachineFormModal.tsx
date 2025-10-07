@@ -10,6 +10,7 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Fade,
 } from "@mui/material";
 import { Machine } from "@src/types";
 
@@ -157,104 +158,106 @@ const MachineFormModal: React.FC<AddMachineModalProps> = ({
       onClose={onClose}
       aria-labelledby="add-machine-modal-title"
     >
-      <Box sx={style}>
-        <Typography
-          id="add-machine-modal-title"
-          color="black"
-          variant="h6"
-          component="h2"
-        >
-          {initialData ? "Edit Machine" : "Add New Machine"}
-        </Typography>
+      <Fade in={open}>
+        <Box sx={style}>
+          <Typography
+            id="add-machine-modal-title"
+            color="black"
+            variant="h6"
+            component="h2"
+          >
+            {initialData ? "Edit Machine" : "Add New Machine"}
+          </Typography>
 
-        <Box component="form" sx={{ mt: 2 }}>
-          <Stack spacing={2}>
-            <TextField
-              fullWidth
-              label="Name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              error={!!errors.name}
-              helperText={errors.name}
-            />
-            <FormControl fullWidth error={!!errors.locationType}>
-              <InputLabel>Location Type</InputLabel>
-              <Select
-                name="locationType"
-                value={formData.locationType}
-                label="Location Type"
-                onChange={handleSelectChange}
-              >
-                <MenuItem value="SCHOOL">SCHOOL</MenuItem>
-                <MenuItem value="SHOPPING MALL">SHOPPING MALL</MenuItem>
-                <MenuItem value="HOSPITAL">HOSPITAL</MenuItem>
-              </Select>
-              {errors.locationType && (
-                <Typography
-                  variant="caption"
-                  color="error"
-                  sx={{ mt: 0.5, ml: 1.75 }}
+          <Box component="form" sx={{ mt: 2 }}>
+            <Stack spacing={2}>
+              <TextField
+                fullWidth
+                label="Name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                error={!!errors.name}
+                helperText={errors.name}
+              />
+              <FormControl fullWidth error={!!errors.locationType}>
+                <InputLabel>Location Type</InputLabel>
+                <Select
+                  name="locationType"
+                  value={formData.locationType}
+                  label="Location Type"
+                  onChange={handleSelectChange}
                 >
-                  {errors.locationType}
-                </Typography>
-              )}
-            </FormControl>
-            <TextField
-              fullWidth
-              label="Expected Sales / Day (Baht)"
-              name="expectedSalesPerDay"
-              type="number"
-              value={formData.expectedSalesPerDay}
-              onChange={handleChange}
-              error={!!errors.expectedSalesPerDay}
-              helperText={errors.expectedSalesPerDay}
-            />
-            <TextField
-              fullWidth
-              label="Average Profit Margin (%)"
-              name="averageProfitMarginPercentage"
-              type="number"
-              placeholder="e.g., 0.4 for 40%"
-              value={formData.averageProfitMarginPercentage}
-              onChange={handleChange}
-              error={!!errors.averageProfitMarginPercentage}
-              helperText={errors.averageProfitMarginPercentage}
-            />
-            <TextField
-              fullWidth
-              label="Rent Cost / Day (Baht)"
-              name="rentCostPerDay"
-              type="number"
-              value={formData.rentCostPerDay}
-              onChange={handleChange}
-              error={!!errors.rentCostPerDay}
-              helperText={errors.rentCostPerDay}
-            />
-            <TextField
-              fullWidth
-              label="Electric Cost / Temp / Day (Baht per °C)"
-              name="electricCostPerTempPerDay"
-              type="number"
-              value={formData.electricCostPerTempPerDay}
-              onChange={handleChange}
-              error={!!errors.electricCostPerTempPerDay}
-              helperText={errors.electricCostPerTempPerDay}
-            />
+                  <MenuItem value="SCHOOL">SCHOOL</MenuItem>
+                  <MenuItem value="SHOPPING MALL">SHOPPING MALL</MenuItem>
+                  <MenuItem value="HOSPITAL">HOSPITAL</MenuItem>
+                </Select>
+                {errors.locationType && (
+                  <Typography
+                    variant="caption"
+                    color="error"
+                    sx={{ mt: 0.5, ml: 1.75 }}
+                  >
+                    {errors.locationType}
+                  </Typography>
+                )}
+              </FormControl>
+              <TextField
+                fullWidth
+                label="Expected Sales / Day (Baht)"
+                name="expectedSalesPerDay"
+                type="number"
+                value={formData.expectedSalesPerDay}
+                onChange={handleChange}
+                error={!!errors.expectedSalesPerDay}
+                helperText={errors.expectedSalesPerDay}
+              />
+              <TextField
+                fullWidth
+                label="Average Profit Margin (%)"
+                name="averageProfitMarginPercentage"
+                type="number"
+                placeholder="e.g., 0.4 for 40%"
+                value={formData.averageProfitMarginPercentage}
+                onChange={handleChange}
+                error={!!errors.averageProfitMarginPercentage}
+                helperText={errors.averageProfitMarginPercentage}
+              />
+              <TextField
+                fullWidth
+                label="Rent Cost / Day (Baht)"
+                name="rentCostPerDay"
+                type="number"
+                value={formData.rentCostPerDay}
+                onChange={handleChange}
+                error={!!errors.rentCostPerDay}
+                helperText={errors.rentCostPerDay}
+              />
+              <TextField
+                fullWidth
+                label="Electric Cost / Temp / Day (Baht per °C)"
+                name="electricCostPerTempPerDay"
+                type="number"
+                value={formData.electricCostPerTempPerDay}
+                onChange={handleChange}
+                error={!!errors.electricCostPerTempPerDay}
+                helperText={errors.electricCostPerTempPerDay}
+              />
+            </Stack>
+          </Box>
+
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{ mt: 3, justifyContent: "flex-end" }}
+          >
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button variant="contained" onClick={handleSave}>
+              Save
+            </Button>
           </Stack>
         </Box>
-
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{ mt: 3, justifyContent: "flex-end" }}
-        >
-          <Button onClick={handleCancel}>Cancel</Button>
-          <Button variant="contained" onClick={handleSave}>
-            Save
-          </Button>
-        </Stack>
-      </Box>
+      </Fade>
     </Modal>
   );
 };
