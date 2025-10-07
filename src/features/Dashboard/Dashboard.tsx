@@ -20,6 +20,7 @@ import {
   calculate7DayForecast,
   DailyForecast,
 } from "@src/features/Dashboard/forecast.helper";
+import ForecastChart from "./ForecastChart";
 
 interface DashboardProps {
   machines: Machine[];
@@ -186,6 +187,9 @@ const Dashboard: React.FC<DashboardProps> = ({ machines }) => {
           <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
             7-Day Forecast
           </Typography>
+          <Paper sx={{ p: 2 }}>
+            <ForecastChart data={forecast7Days} />
+          </Paper>
           <TableContainer component={Paper}>
             <Table size="small" aria-label="forecast table">
               <TableHead>

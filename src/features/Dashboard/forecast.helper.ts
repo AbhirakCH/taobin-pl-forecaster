@@ -1,7 +1,6 @@
 import { Machine } from "@src/types";
 import { WeatherData } from "@src/services/weatherService";
 
-// กำหนดหน้าตาของข้อมูลพยากรณ์แต่ละวัน
 export interface DailyForecast {
   date: string;
   avgTemp: number;
@@ -17,32 +16,32 @@ export const calculate7DayForecast = (
     return [];
   }
 
-  // 1. คำนวณค่าคงที่รายวันที่ไม่ขึ้นกับอากาศ
+  // 1. calculate total daily sales, rent, and gross profit
   const totalDailySales = machines.reduce(
     (sum, m) => sum + m.expectedSalesPerDay,
     0
   );
   const totalDailyRent = machines.reduce((sum, m) => sum + m.rentCostPerDay, 0);
-  // คำนวณ Gross Profit รวมจากทุกเครื่อง
+  // calculate total gross profit from all machines
   const totalGrossProfit = machines.reduce(
     (sum, m) => sum + m.expectedSalesPerDay * m.averageProfitMarginPercentage,
     0
   );
 
-  // 2. วนลูป 7 วันเพื่อคำนวณค่าที่ขึ้นกับอากาศ
+  // 2. loop 7 days to calculate weather-dependent values
   const forecastData: DailyForecast[] = weather.daily.time.map(
     (date, index) => {
       const minTemp = weather.daily.temperature_2m_min[index];
       const maxTemp = weather.daily.temperature_2m_max[index];
       const avgTemp = (minTemp + maxTemp) / 2;
 
-      // คำนวณค่าไฟรวมของทุกเครื่องในวันนั้นๆ
+      // calculate total electricity cost for all machines in that day
       const totalElectricityCost = machines.reduce(
         (sum, m) => sum + m.electricCostPerTempPerDay * avgTemp,
         0
       );
 
-      // คำนวณกำไร/ขาดทุนสุทธิของวันนั้น
+      // calculate net profit/loss for that day
       const netProfitLoss =
         totalGrossProfit - totalDailyRent - totalElectricityCost;
 
