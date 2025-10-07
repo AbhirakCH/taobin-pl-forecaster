@@ -35,14 +35,18 @@ const MachineList: React.FC<MachineListProps> = ({
       <Typography variant="h5" gutterBottom>
         Machine Management
       </Typography>
-      <Button variant="contained" onClick={onOpenAddModal}>
+      <Button
+        variant="contained"
+        onClick={onOpenAddModal}
+        sx={{ marginBottom: 2 }}
+      >
         Add Machine
       </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Machine Name</TableCell>
+              <TableCell>Name</TableCell>
               <TableCell>Location Type</TableCell>
               <TableCell align="right">Expected Sales / Day (Baht)</TableCell>
               <TableCell align="right">Average Profit Margin (%)</TableCell>

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Container } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { Machine } from "@src/types";
 import MachineList from "@src/features/AdminPanel/MachineList";
 import MachineFormModal from "@src/features/AdminPanel/MachineFormModal";
 import ConfirmDeleteModal from "@src/features/AdminPanel/ConfirmDeleteModal";
+import Dashboard from "@src/features/Dashboard/Dashboard";
 
 const DUMMY_MACHINES = [
   {
@@ -99,12 +101,20 @@ function App() {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <MachineList
-        machines={machines}
-        onOpenAddModal={() => setIsModalOpen(true)}
-        onEdit={onEditMachine}
-        onDelete={handleOpenDeleteConfirm}
-      />
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={7}>
+          <MachineList
+            machines={machines}
+            onOpenAddModal={() => setIsModalOpen(true)}
+            onEdit={onEditMachine}
+            onDelete={handleOpenDeleteConfirm}
+          />
+        </Grid>
+        <Grid item xs={12} md={5}>
+          <Dashboard machines={machines} />
+        </Grid>
+      </Grid>
+
       <MachineFormModal
         open={isModalOpen}
         onClose={handleCloseModal}

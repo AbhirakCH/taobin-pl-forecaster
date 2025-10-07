@@ -171,7 +171,7 @@ const MachineFormModal: React.FC<AddMachineModalProps> = ({
           <Stack spacing={2}>
             <TextField
               fullWidth
-              label="Machine Name"
+              label="Name"
               name="name"
               value={formData.name}
               onChange={handleChange}
