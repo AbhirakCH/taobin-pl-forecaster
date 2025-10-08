@@ -1,16 +1,78 @@
-# React + Vite
+# Tao Bin P/L Forecaster
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a web application developed as a practical assignment for the Frontend Engineer position at Forth Vending (Tao Bin). The project consists of an Admin Panel for managing beverage machine data and a dynamic Dashboard that forecasts daily and weekly Profit/Loss based on that data and live weather information.
 
-Currently, two official plugins are available:
+**[ Live Demo URL ]** _url_
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Machine Management (CRUD):**
 
-## Expanding the ESLint configuration
+  - **Create:** Add new machines via a modal form with comprehensive input validation.
+  - **Read:** Display a list of all machines in a clean, organized table.
+  - **Update:** Edit existing machine data with pre-filled forms.
+  - **Delete:** Remove machines with a confirmation step to prevent accidental deletion.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **P/L Forecasting Dashboard:**
+  - **Best-Selling Location:** Instantly identifies the most profitable location type based on aggregated expected sales.
+  - **7-Day Forecast:** Calculates and displays a 7-day profit/loss forecast, dynamically adjusting for electricity costs based on real-time weather data from the Open-Meteo API.
+  - **Cumulative Weekly Summary:** Provides a clear summary of total revenue, costs, and net profit for the upcoming week.
+  - **Data Visualization:** Presents the 7-day forecast as an intuitive line chart for easy trend analysis.
+
+---
+
+## Tech Stack
+
+- **Framework:** React 18
+- **Language:** TypeScript
+- **Build Tool:** Vite
+- **UI Library:** Material-UI (MUI)
+- **API Client:** Axios
+- **Charting Library:** Recharts
+- **Code Quality:** ESLint
+
+---
+
+## Getting Started
+
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+You need to have [Node.js](https://nodejs.org/) (version 18 or later) and npm installed on your computer.
+
+### Installation & Setup
+
+1.  **Clone the repository to your local machine:**
+
+    ```bash
+    git clone [Your-GitHub-Repository-URL]
+    ```
+
+2.  **Navigate into the project directory:**
+
+    ```bash
+    cd taobin-pl-forecaster
+    ```
+
+3.  **Install all the required dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+4.  **Run the development server:**
+
+    ```bash
+    npm run dev
+    ```
+
+5.  Open your browser and navigate to `http://localhost:5173` (or the port shown in your terminal) to see the application in action.
+
+---
+
+## Project Structure
+
+The project follows a feature-based architecture to ensure scalability and maintainability.

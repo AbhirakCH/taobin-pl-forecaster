@@ -1,5 +1,3 @@
-// src/features/Dashboard/ForecastChart.tsx
-
 import React from "react";
 import {
   LineChart,
@@ -18,10 +16,10 @@ interface ForecastChartProps {
 }
 
 const ForecastChart: React.FC<ForecastChartProps> = ({ data }) => {
-  // จัดรูปแบบข้อมูลเล็กน้อยเพื่อให้ Recharts อ่านง่ายขึ้น
+  // format data for Recharts
   const chartData = data.map((day) => ({
     ...day,
-    // สร้าง key ใหม่สำหรับแสดงวันที่แบบสั้นๆ ในแกน X
+    // create a new key for the short date on the X axis
     shortDate: new Date(day.date).toLocaleDateString("en-GB", {
       day: "numeric",
       month: "short",
@@ -29,7 +27,7 @@ const ForecastChart: React.FC<ForecastChartProps> = ({ data }) => {
   }));
 
   return (
-    // ResponsiveContainer ทำให้กราฟปรับขนาดตามขนาดของ parent container ได้
+    // ResponsiveContainer makes the chart responsive to the parent container
     <ResponsiveContainer width="100%" height={300}>
       <LineChart
         data={chartData}
@@ -47,7 +45,7 @@ const ForecastChart: React.FC<ForecastChartProps> = ({ data }) => {
         <Line
           type="monotone"
           dataKey="netProfitLoss"
-          stroke="#82ca9d" // สีเขียว
+          stroke="#82ca9d"
           strokeWidth={2}
           name="Net Profit/Loss"
         />
