@@ -16,11 +16,6 @@ export const calculate7DayForecast = (
     return [];
   }
 
-  // 1. calculate total daily sales, rent, and gross profit
-  const totalDailySales = machines.reduce(
-    (sum, m) => sum + m.expectedSalesPerDay,
-    0
-  );
   const totalDailyRent = machines.reduce((sum, m) => sum + m.rentCostPerDay, 0);
   // calculate total gross profit from all machines
   const totalGrossProfit = machines.reduce(
@@ -28,7 +23,7 @@ export const calculate7DayForecast = (
     0
   );
 
-  // 2. loop 7 days to calculate weather-dependent values
+  // loop 7 days to calculate weather-dependent values
   const forecastData: DailyForecast[] = weather.daily.time.map(
     (date, index) => {
       const minTemp = weather.daily.temperature_2m_min[index];

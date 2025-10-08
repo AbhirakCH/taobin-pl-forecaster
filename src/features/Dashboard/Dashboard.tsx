@@ -17,7 +17,7 @@ import {
   WeatherData,
 } from "@src/services/weatherService";
 import { calculate7DayForecast } from "@src/features/Dashboard/forecast.helper";
-import ForecastChart from "./ForecastChart";
+import ForecastChart from "@src/features/Dashboard/ForecastChart";
 
 interface DashboardProps {
   machines: Machine[];
@@ -27,6 +27,10 @@ const Dashboard: React.FC<DashboardProps> = ({ machines }) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Constants
+  const DEFAULT_LOCATION_TYPE = "N/A";
+  const DEFAULT_SALES = 0;
 
   useEffect(() => {
     const getWeatherData = async () => {
@@ -46,7 +50,7 @@ const Dashboard: React.FC<DashboardProps> = ({ machines }) => {
 
   const bestSellingLocation = useMemo(() => {
     if (machines.length === 0) {
-      return { type: "N/A", sales: 0 };
+      return { type: DEFAULT_LOCATION_TYPE, sales: DEFAULT_SALES };
     }
     const salesByLocation: { [key: string]: number } = {};
     machines.forEach((machine) => {
@@ -59,19 +63,13 @@ const Dashboard: React.FC<DashboardProps> = ({ machines }) => {
       (best, [type, sales]) => {
         return sales > best.sales ? { type, sales } : best;
       },
-      { type: "N/A", sales: 0 }
+      { type: DEFAULT_LOCATION_TYPE, sales: DEFAULT_SALES }
     );
   }, [machines]);
 
   const forecast7Days = useMemo(() => {
     return calculate7DayForecast(machines, weather);
   }, [machines, weather]);
-
-  useEffect(() => {
-    if (forecast7Days.length > 0) {
-      console.log("7-Day Forecast Calculation:", forecast7Days);
-    }
-  }, [forecast7Days]);
 
   const weeklySummary = useMemo(() => {
     if (machines.length === 0 || forecast7Days.length === 0) {
