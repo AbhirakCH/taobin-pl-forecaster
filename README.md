@@ -2,7 +2,7 @@
 
 This is a web application developed as a practical assignment for the Frontend Engineer position at Forth Vending (Tao Bin). The project consists of an Admin Panel for managing beverage machine data and a dynamic Dashboard that forecasts daily and weekly Profit/Loss based on that data and live weather information.
 
-**[ Live Demo URL ]** _url_
+**[ Live Demo URL ]** https://taobin-pl-forecaster.vercel.app/
 
 ---
 
