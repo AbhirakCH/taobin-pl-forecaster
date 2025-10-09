@@ -36,6 +36,20 @@ const style = {
 
 type MachineFormData = Omit<Machine, "id">;
 
+type FormState = Omit<
+  Machine,
+  | "id"
+  | "expectedSalesPerDay"
+  | "averageProfitMarginPercentage"
+  | "rentCostPerDay"
+  | "electricCostPerTempPerDay"
+> & {
+  expectedSalesPerDay: number | "";
+  averageProfitMarginPercentage: number | "";
+  rentCostPerDay: number | "";
+  electricCostPerTempPerDay: number | "";
+};
+
 const MachineFormModal: React.FC<AddMachineModalProps> = ({
   open,
   onClose,
@@ -43,14 +57,15 @@ const MachineFormModal: React.FC<AddMachineModalProps> = ({
   initialData,
   onClearInitialData,
 }) => {
-  const [formData, setFormData] = useState<MachineFormData>({
+  const initialFormState: FormState = {
     name: "",
     locationType: "",
-    expectedSalesPerDay: 0,
-    averageProfitMarginPercentage: 0,
-    rentCostPerDay: 0,
-    electricCostPerTempPerDay: 0,
-  });
+    expectedSalesPerDay: "",
+    averageProfitMarginPercentage: "",
+    rentCostPerDay: "",
+    electricCostPerTempPerDay: "",
+  };
+  const [formData, setFormData] = useState<FormState>(initialFormState);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
@@ -65,14 +80,7 @@ const MachineFormModal: React.FC<AddMachineModalProps> = ({
         electricCostPerTempPerDay: initialData.electricCostPerTempPerDay,
       });
     } else {
-      setFormData({
-        name: "",
-        locationType: "",
-        expectedSalesPerDay: 0,
-        averageProfitMarginPercentage: 0,
-        rentCostPerDay: 0,
-        electricCostPerTempPerDay: 0,
-      });
+      setFormData(initialFormState);
     }
     setErrors({});
   }, [initialData, open]);
@@ -86,20 +94,20 @@ const MachineFormModal: React.FC<AddMachineModalProps> = ({
     if (!formData.locationType) {
       newErrors.locationType = "Location type is required.";
     }
-    if (formData.expectedSalesPerDay <= 0) {
+    if (Number(formData.expectedSalesPerDay) <= 0) {
       newErrors.expectedSalesPerDay = "Sales must be greater than 0.";
     }
     if (
-      formData.averageProfitMarginPercentage <= 0 ||
-      formData.averageProfitMarginPercentage > 1
+      Number(formData.averageProfitMarginPercentage) <= 0 ||
+      Number(formData.averageProfitMarginPercentage) > 1
     ) {
       newErrors.averageProfitMarginPercentage =
         "Profit margin must be between 0 and 1 (e.g., 0.4 for 40%).";
     }
-    if (formData.rentCostPerDay <= 0) {
+    if (Number(formData.rentCostPerDay) <= 0) {
       newErrors.rentCostPerDay = "Rent cost must be greater than 0.";
     }
-    if (formData.electricCostPerTempPerDay <= 0) {
+    if (Number(formData.electricCostPerTempPerDay) <= 0) {
       newErrors.electricCostPerTempPerDay =
         "Electric cost must be greater than 0.";
     }
@@ -108,25 +116,16 @@ const MachineFormModal: React.FC<AddMachineModalProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name as string]: value,
+      [name]: value,
     }));
   };
 
   const resetForm = () => {
-    setFormData({
-      name: "",
-      locationType: "",
-      expectedSalesPerDay: 0,
-      averageProfitMarginPercentage: 0,
-      rentCostPerDay: 0,
-      electricCostPerTempPerDay: 0,
-    });
+    setFormData(initialFormState);
     setErrors({});
     onClearInitialData();
   };
@@ -135,7 +134,18 @@ const MachineFormModal: React.FC<AddMachineModalProps> = ({
     if (!validate()) {
       return;
     }
-    onSave(formData);
+
+    const dataToSave: MachineFormData = {
+      ...formData,
+      expectedSalesPerDay: Number(formData.expectedSalesPerDay) || 0,
+      averageProfitMarginPercentage:
+        Number(formData.averageProfitMarginPercentage) || 0,
+      rentCostPerDay: Number(formData.rentCostPerDay) || 0,
+      electricCostPerTempPerDay:
+        Number(formData.electricCostPerTempPerDay) || 0,
+    };
+
+    onSave(dataToSave);
     resetForm();
   };
 
